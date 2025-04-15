@@ -1,89 +1,63 @@
+<?php
+// ==== Simple Admin Panel ====
+// 🔐 Basic token check
+$access_key = 'mySuperSecretKey2024';
+if ($_GET['key'] !== $access_key) {
+    http_response_code(403);
+    exit('Access Denied');
+}
+
+function renderTable($file, $headers = []) {
+    if (!file_exists($file)) {
+        echo "<p><b>$file</b> not found.</p>";
+        return;
+    }
+
+    $rows = array_filter(file($file));
+    echo "<h2>$file</h2><table border='1' cellpadding='6' cellspacing='0' style='font-family: monospace; font-size: 13px; background: #fff'>";
+    if ($headers) {
+        echo "<tr style='background:#eee'>";
+        foreach ($headers as $h) echo "<th>$h</th>";
+        echo "</tr>";
+    }
+
+    foreach ($rows as $line) {
+        echo "<tr>";
+        foreach (str_getcsv($line) as $cell) {
+            echo "<td>" . htmlspecialchars($cell) . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table><br><br>";
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Roy’s Admin Panel</title>
+  <title>Roy's Tracker Admin Panel</title>
   <style>
-    body { background: #111; color: #eee; font-family: monospace; padding: 20px; }
-    #panel { display: none; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 8px; border: 1px solid #333; }
-    input { padding: 8px; margin: 10px 0; }
-    button { padding: 6px 12px; margin-right: 8px; }
+    body {
+      background: #111;
+      color: #eee;
+      font-family: monospace;
+      padding: 40px;
+    }
+    h1, h2 { color: #00f2ff; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #333; padding: 6px; }
+    th { background: #222; color: #f0f0f0; }
+    td { color: #0f0; }
+    a { color: #0ff; }
   </style>
 </head>
 <body>
-  <h1>🕵️ Roy’s Tracker Admin Panel</h1>
-  <div id="auth" style="color:red;">🔒 Locked — send `/unlockadmin` via Telegram</div>
-  <div id="panel">
-    <input id="search" placeholder="Search IP / UA / Country..." oninput="filterLogs()">
-    <table id="logTable">
-      <thead>
-        <tr>
-          <th>Fingerprint</th><th>IP</th><th>UA</th><th>Screen</th><th>Lang</th><th>TZ</th><th>Ref</th><th>Country</th><th>City</th><th>ISP</th><th>Time</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <button onclick="downloadLogs()">📥 Export</button>
-    <button onclick="clearLogs()">🧹 Clear</button>
-  </div>
+<h1>🧠 Roy's Cloak Tracker Admin</h1>
+<p><b>Time:</b> <?= date('Y-m-d H:i:s') ?></p>
 
-  <script>
-    let rows = [];
-    async function checkUnlock() {
-      const res = await fetch('/api/admin-status');
-      const data = await res.json();
-      if (data.unlocked) {
-        document.getElementById('auth').style.display = 'none';
-        document.getElementById('panel').style.display = 'block';
-        loadLogs();
-      } else {
-        setTimeout(checkUnlock, 5000);
-      }
-    }
+<?php
+renderTable('log.csv', ['Fingerprint', 'IP', 'User Agent', 'Screen', 'Lang', 'TZ', 'Referrer', 'Country', 'City', 'ISP', 'Logged']);
+renderTable('redirect_log.csv', ['Fingerprint', 'IP', 'Screen', 'Lang', 'Referrer', 'TZ', 'Logged']);
+?>
 
-    async function loadLogs() {
-      const res = await fetch('log.csv');
-      const text = await res.text();
-      rows = text.trim().split('\n').map(l => l.split(','));
-      renderTable(rows);
-    }
-
-    function renderTable(data) {
-      const tbody = document.querySelector('#logTable tbody');
-      tbody.innerHTML = '';
-      data.forEach(r => {
-        const tr = document.createElement('tr');
-        r.forEach(c => {
-          const td = document.createElement('td');
-          td.textContent = c;
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-    }
-
-    function filterLogs() {
-      const q = document.getElementById('search').value.toLowerCase();
-      const filtered = rows.filter(r => r.join(' ').toLowerCase().includes(q));
-      renderTable(filtered);
-    }
-
-    function downloadLogs() {
-      const blob = new Blob([rows.map(r => r.join(',')).join('\n')], {type:'text/csv'});
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'tracker_logs.csv';
-      link.click();
-    }
-
-    function clearLogs() {
-      if (!confirm('⚠️ Confirm clear logs?')) return;
-      fetch('logger.php?wipe=1').then(() => location.reload());
-    }
-
-    checkUnlock();
-  </script>
 </body>
 </html>
