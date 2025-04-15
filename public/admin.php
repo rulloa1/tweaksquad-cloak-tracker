@@ -1,7 +1,7 @@
 <?php
 // ==== Simple Admin Panel ====
 // 🔐 Basic token check
-$access_key = 'bareback69T$*';
+$access_key = 'mySuperSecretKey2024';
 if ($_GET['key'] !== $access_key) {
     http_response_code(403);
     exit('Access Denied');
