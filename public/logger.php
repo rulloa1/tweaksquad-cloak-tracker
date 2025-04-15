@@ -1,8 +1,8 @@
 <?php
 function sendToTelegram($message) {
-    $token = '7294278352:AAE6Lg_NKrdmCT6XRaAdeTUca8rIgIaHCXA';
+    $token = '7785870030:AAEcD16gv6JSRRdeKiQywHS_YfqtuyVsEDg';
     $chatId = 'RoysCyberStore_Admin';
-    $url = "https://api.telegram.org/bot{$token}/sendMessage";
+    $url = "https://t.me/tweaksquadbot/sendMessage";
 
     $data = [
         'chat_id' => $chatId,
