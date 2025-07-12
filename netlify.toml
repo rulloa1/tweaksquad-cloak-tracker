@@ -1,0 +1,7 @@
+[build]
+  base    = "my-app"   # where Netlify will `cd` before running commands
+  command = "npm run build"
+  publish = "out"      # resolved inside the base directory
+
+[context.production.environment]
+  # Add any NEXT_PUBLIC_* or other vars here if/when required
