@@ -1,0 +1,28 @@
+{
+  "name": "tweaksquad-cloak-tracker",
+  "version": "1.0.0",
+  "description": "A cloaking tracker system with fingerprinting capabilities",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve public",
+    "build": "echo 'Build completed - static files ready in public/'",
+    "dev": "serve public --single",
+    "test": "echo \"No tests specified\" && exit 0",
+    "install-server": "npm install -g serve",
+    "preview": "serve public --listen 3000"
+  },
+  "keywords": [
+    "tracker",
+    "fingerprinting",
+    "analytics",
+    "cloak"
+  ],
+  "author": "TweakSquad",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

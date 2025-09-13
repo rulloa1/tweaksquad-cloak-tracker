@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TweakSquad Tracker</title>
+  <meta http-equiv="refresh" content="0; url=public/tracker.html">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4285f4;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>TweakSquad Cloak Tracker</h2>
+    <div class="spinner"></div>
+    <p>Redirecting to tracker...</p>
+    <p><a href="public/tracker.html">Click here if not redirected automatically</a></p>
+  </div>
+  
+  <script>
+    // Redirect after 1 second if meta refresh doesn't work
+    setTimeout(() => {
+      window.location.href = 'public/tracker.html';
+    }, 1000);
+  </script>
+</body>
+</html>

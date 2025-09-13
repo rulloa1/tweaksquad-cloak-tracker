@@ -1,7 +1,7 @@
 <?php
 // ==== Simple Admin Panel ====
-// 🔐 Basic token check
-$access_key = 'mySuperSecretKey2024';
+// 🔐 Basic token check with environment variable support
+$access_key = $_ENV['ACCESS_KEY'] ?? getenv('ACCESS_KEY') ?? 'mySuperSecretKey2024';
 if ($_GET['key'] !== $access_key) {
     http_response_code(403);
     exit('Access Denied');

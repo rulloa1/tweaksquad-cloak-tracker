@@ -1,7 +1,25 @@
 [build]
-  base    = "my-app"   # where Netlify will `cd` before running commands
+  base    = "."        # project root directory
   command = "npm run build"
-  publish = "out"      # resolved inside the base directory
+  publish = "public"   # serve from public directory
 
 [context.production.environment]
-  # Add any NEXT_PUBLIC_* or other vars here if/when required
+  ACCESS_KEY = "CHANGE_THIS_IN_PRODUCTION"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "*.csv"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+  from = "/"
+  to = "/tracker.html"
+  status = 200
